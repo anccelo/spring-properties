@@ -24,6 +24,7 @@ public class GdnServiceAdapter implements GdnServicePort {
     private final RestTemplate gdnRestTemplate;
     private final GdnClientProperties gdnClientProperties;
     private final ZosServiceAdapter zosServiceAdapter;
+    // Here if it existed it would be better to make:   private final ZosServicePort zosServiceAdapter?
 
     public GdnServiceAdapter(final GdnConfigurationReader gdnConfigurationReader,
                              final @Qualifier("GDNRestTemplate") RestTemplate gdnRestTemplate,
