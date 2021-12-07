@@ -128,7 +128,7 @@ public class GdnServiceAdapterTest {
     public void should_return_the_entire_document_when_succeeding_in_reaching_gdn_and_the_body_is_present() {
 
         // [Arrange]
-        when(documentRequestMock.getFilename()).thenReturn(PDF_FILENAME);
+        when(documentMock.getFilename()).thenReturn(PDF_FILENAME);
         when(gdnConfigurationReaderMock.completeUrlUsing(documentRequestMock)).thenReturn(GDN_DOCUMENT_URL);
         when(responseMock.getStatusCode()).thenReturn(HttpStatus.OK);
         when(responseMock.hasBody()).thenReturn(true);
