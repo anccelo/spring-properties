@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 public class GdnServiceAdapterTest {
 
     private static final String PDF_FILENAME = "my-unit-test.pdf";
+    private static final String PDF_FILENAME_RETURNED = "my-unit-test.pdfN";
     private static final byte[] PDF_CONTENT = "UNIT TESTING".getBytes(UTF_8);
     private static final String GDN_DOCUMENT_URL = "http://my-unit-test-consultation-domain:1234/unit-test-document/unit-test-get?user=1234567&user-type=BANK_AGENT&document=DOC123456789";
     private static final String REST_CLIENT_ERROR_MESSAGE = "Something went bad when calling GDN through HTTP.";
@@ -128,11 +129,12 @@ public class GdnServiceAdapterTest {
     public void should_return_the_entire_document_when_succeeding_in_reaching_gdn_and_the_body_is_present() {
 
         // [Arrange]
-        when(documentRequestMock.getFilename()).thenReturn(PDF_FILENAME);
         when(gdnConfigurationReaderMock.completeUrlUsing(documentRequestMock)).thenReturn(GDN_DOCUMENT_URL);
         when(responseMock.getStatusCode()).thenReturn(HttpStatus.OK);
         when(responseMock.hasBody()).thenReturn(true);
         when(responseMock.getBody()).thenReturn(PDF_CONTENT);
+        when(documentRequestMock.getIdentLoc()).thenReturn(GDN_IDENT_LOC);
+        when(documentRequestMock.getIdDoc()).thenReturn(PDF_FILENAME);
         when(gdnRestTemplateMock.getForEntity(GDN_DOCUMENT_URL, byte[].class)).thenReturn(responseMock);
 
         // [Act]
@@ -143,7 +145,7 @@ public class GdnServiceAdapterTest {
         assertThat(actual)
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("content", pdfEncodedContent)
-                .hasFieldOrPropertyWithValue("filename", PDF_FILENAME)
+                .hasFieldOrPropertyWithValue("filename", PDF_FILENAME_RETURNED)
                 .hasFieldOrPropertyWithValue("libelleAnomalie", null)
                 .hasFieldOrPropertyWithValue("returnCode", TRAITEMENT_CORRECT);
 
